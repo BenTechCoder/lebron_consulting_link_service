@@ -38,7 +38,7 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
 }
 app.use(
   Paths.Admin.Base,
-  express.static(path.resolve(process.cwd(), 'dist/client/browser')),
+  express.static(path.resolve(process.cwd(), 'dist/client/browser'))
 );
 
 // Add APIs, must be after middleware
@@ -59,6 +59,10 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 
 app.get('/', (req: Request, res: Response) => {
   res.redirect('https://www.lebronconsulting.tech/');
+});
+
+app.get('/:link', (req: Request, res: Response) => {
+  res.send(req.params);
 });
 
 // Redirect to login if not logged in.
