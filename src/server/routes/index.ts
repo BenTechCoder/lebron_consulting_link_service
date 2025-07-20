@@ -11,7 +11,6 @@ const adminApp = path.resolve(process.cwd(), 'dist/client/browser/index.html');
 
 // Init router
 const AdminRouter = Router();
-// Get all users
 // const AdminApiRouter = Router();
 // AdminApiRouter.get(Paths.Users.Get, UserRoutes.getAll);
 // AdminApiRouter.post(Paths.Users.Add, UserRoutes.add);
