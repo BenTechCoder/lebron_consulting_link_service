@@ -1,14 +1,9 @@
-export interface IModel {
-  id: number;
-  created: Date;
-}
-
 export interface ILink {
   id: number;
   customSlug?: string;
   title: string;
-  // TODO: Make/Grab/Vaidate Url as a type
-  redirectionUrl: string;
+  // TODO: (store as `new URL("https://www.example.com")`)
+  redirectionUrl: URL;
   created: Date;
   lastModified: Date;
 }
