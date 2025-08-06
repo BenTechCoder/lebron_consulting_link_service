@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development ts-node ./src/server/index.ts",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src/server --ext .ts",
     "lint": "eslint .",
-    "lint:fix":"eslint . --fix",
+    "lint:fix": "eslint . --fix",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test vitest",
     "type-check": "tsc --noEmit"
@@ -16,6 +16,14 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "better-sqlite3": "^12.2.0",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
@@ -29,22 +37,19 @@
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
-    "@angular/common": "^19.2.0",
-    "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@angular/forms": "^19.2.0",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/router": "^19.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.14",
+    "@angular/cli": "^19.2.14",
+    "@angular/compiler-cli": "^19.2.0",
     "@eslint/js": "^9.27.0",
     "@stylistic/eslint-plugin-js": "^4.4.0",
     "@stylistic/eslint-plugin-ts": "^4.4.0",
     "@swc/core": "^1.11.29",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/cookie-parser": "^1.4.8",
     "@types/find": "^0.2.4",
     "@types/fs-extra": "^11.0.4",
@@ -64,9 +69,6 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1",
-    "vitest": "^3.1.4",
-     "@angular-devkit/build-angular": "^19.2.14",
-    "@angular/cli": "^19.2.14",
-    "@angular/compiler-cli": "^19.2.0"
+    "vitest": "^3.1.4"
   }
 }

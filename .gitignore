@@ -36,3 +36,8 @@ testem.log
 .DS_Store
 Thumbs.db
 /.vs
+
+# SQLite files
+*.db
+*.db-wal
+*.db-shm
