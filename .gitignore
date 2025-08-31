@@ -3,6 +3,7 @@ dist/
 temp/
 **/**/*.log
 config.js
+config
 /home/cytron499/.volta/tools/image/node/20.18.0/bin/node
 
 # Compiled output
@@ -41,3 +42,7 @@ Thumbs.db
 *.db
 *.db-wal
 *.db-shm
+
+# REST VSCODE EXTENSION
+*.http
+
