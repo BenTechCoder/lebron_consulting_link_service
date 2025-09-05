@@ -2,7 +2,7 @@
   "name": "lebron_consulting_linker",
   "version": "0.0.0",
   "scripts": {
-    "build": "ts-node ./scripts/build.ts && ng build",
+    "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
     "dev": "NODE_ENV=development ts-node ./src/server/index.ts",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src/server --ext .ts",
@@ -13,7 +13,7 @@
     "type-check": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=21.0.0"
   },
   "dependencies": {
     "@angular/common": "^19.2.0",
@@ -39,6 +39,7 @@
     "morgan": "^1.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "wp-types": "^4.68.1",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
