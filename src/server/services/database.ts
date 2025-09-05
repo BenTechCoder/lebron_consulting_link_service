@@ -7,20 +7,28 @@ import { promises as fs } from 'fs';
 const db = new Database('link_cache.db');
 db.pragma('journal_mode = WAL');
 
-export async function startCache() {
-  const isDbCreated = () => {
+export function startCache() {
+  const isDbCreated = (): boolean => {
     try {
-        fs.access('link_cache.db');
-        return true
+      fs.access('link_cache.db');
+      // TODO: USE LOGGING Library
+      console.log('Database not found - Creating cache');
+      return true;
     } catch {
-        return false;
+      console.log('Database Found - Cache Stable');
+      return false;
     }
-  }
-  if (isDbCreated() === false) {
+  };
+
+  if (!isDbCreated()) {
     db.prepare(
       `
-        CREATE TABLE links (id INTEGER PRIMARY KEY);
-        `
+        CREATE TABLE links (id INTEGER PRIMARY KEY,
+         name TEXT,
+         redirect_url TEXT,
+         created TEXT,
+         last_modified TEXT);
+        `,
     ).run();
   }
 }
