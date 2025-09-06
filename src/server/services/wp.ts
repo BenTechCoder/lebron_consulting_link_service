@@ -21,7 +21,7 @@ export async function getAllLinks(): Promise<Link[]> {
   const wpResponse = (await wpRequest.json()) as WpLinkRequest[];
 
   // TODO REFACTOR TO RESPOND TO WEBHOOK AND ADD TO DB ON REQUEST NOT ALL AT ONCE
-
+  // TODO ADD REQUEST TO REST API TO UPDATE WORDPRESS CUSTOM FIELD WITH NEW SHORTENED URL
   return Promise.all(
     wpResponse.map(async (link: WpLinkRequest) => {
       const linkRedirectUrl: URL = link.quick_page
