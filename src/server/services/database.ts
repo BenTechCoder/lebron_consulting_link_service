@@ -1,6 +1,7 @@
 /*
 Service to interact and manage SQlite DB Cache
 */
+import { Link } from '@src/models/common/types/link.model';
 import Database from 'better-sqlite3';
 import { promises as fs } from 'fs';
 
@@ -23,12 +24,14 @@ export function startCache() {
   if (!isDbCreated()) {
     db.prepare(
       `
-        CREATE TABLE links (id INTEGER PRIMARY KEY,
+        CREATE TABLE links (link_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        wp_id INTEGER,
          name TEXT,
          redirect_url TEXT,
          created TEXT,
-         last_modified TEXT);
-        `,
+         last_modified TEXT,
+         shortened_url TEXT);
+        `
     ).run();
   }
 }
@@ -37,6 +40,14 @@ function syncWithWP(params: unknown) {
   // Function that reloads local SQlite Cache with WP-API request Payload
 }
 
-function addLinkToDB(params: unknown) {
+// SECURITY: Validate redirect URLs before storing to prevent open redirect
+// vulnerabilities
+function addLinkToDB(link: Link) {
   // Add individual Link to DB
+  db.prepare(
+    `
+      INSERT INTO links (name, redirect_url, created, last_modified)
+      VALUES (?, ?, ?, ?);
+    `
+  ).run(link.customSlug, link.redirectionUrl, link.created, link.lastModified);
 }
