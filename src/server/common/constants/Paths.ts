@@ -9,4 +9,5 @@ export default {
       Delete: '/delete/:id',
     },
   },
+  wp: '/wp/',
 } as const;

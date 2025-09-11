@@ -5,6 +5,7 @@ Service for managing and interacting with the WP-API
 import ENV from '@src/common/constants/ENV';
 import { Link } from '@src/models/common/types/link.model';
 import { WpLinkRequest } from '@src/models/common/types/wp.model';
+import logger from 'jet-logger';
 import { WP_REST_API_Page } from 'wp-types';
 
 const WP: string = ENV.WpDomain;
@@ -24,19 +25,8 @@ export async function getAllLinks(): Promise<Link[]> {
   // TODO ADD REQUEST TO REST API TO UPDATE WORDPRESS CUSTOM FIELD WITH NEW SHORTENED URL
   return Promise.all(
     wpResponse.map(async (link: WpLinkRequest) => {
-      const linkRedirectUrl: URL = link.quick_page
-        ? await getQuickPageLink(link.quick_page[0].ID)
-        : link.redirect_url;
-
-      const processedLink: Link = {
-        id: link.id,
-        redirectionUrl: new URL(linkRedirectUrl),
-        created: new Date(link.date),
-        lastModified: new Date(link.modified),
-      };
-      return processedLink;
-    })
-  );
+      return await extractLinkFromWp(link);
+}))
 }
 
 export async function getQuickPageLink(id: number): Promise<URL> {
@@ -45,4 +35,19 @@ export async function getQuickPageLink(id: number): Promise<URL> {
   });
   const wpResponse = (await wpRequest.json()) as WP_REST_API_Page;
   return new URL(wpResponse.link);
+}
+
+export async function extractLinkFromWp(req: WpLinkRequest) {
+  const linkRedirectUrl: URL = req.quick_page
+    ? await getQuickPageLink(req.quick_page[0].ID)
+    : req.redirect_url;
+
+  const processedLink: Link = {
+    linkSource: req.link,
+    linkSourceId: req.id,
+    redirectUrl: new URL(linkRedirectUrl),
+    createdAt: new Date(req.date),
+    lastModified: new Date(req.modified),
+  };
+  return processedLink;
 }

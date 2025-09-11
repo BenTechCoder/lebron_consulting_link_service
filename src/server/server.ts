@@ -11,6 +11,11 @@ import ENV from '@src/common/constants/ENV';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { RouteError } from '@src/common/util/route-errors';
 import { NodeEnvs } from '@src/common/constants';
+import { base62Encode } from './common/util/base62';
+import { extractLinkFromWp } from './services/wp';
+import { WpLinkRequest } from './models/common/types/wp.model';
+import { Link } from './models/common/types/link.model';
+import { insertLink } from './services/database';
 
 /******************************************************************************
                                 Setup
@@ -44,6 +49,7 @@ app.use(
 // Add APIs, must be after middleware
 app.use(Paths.Admin.Base, AdminRouter);
 
+
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
@@ -63,6 +69,12 @@ app.get('/', (req: Request, res: Response) => {
 
 app.get('/:link', (req: Request, res: Response) => {
   res.send(req.params);
+});
+
+app.post(Paths.wp, async (req: Request, res: Response) => {
+  const link:Link = await extractLinkFromWp(req.body as WpLinkRequest);
+  insertLink(link);
+  res.send(req.body);
 });
 
 // Redirect to login if not logged in.
