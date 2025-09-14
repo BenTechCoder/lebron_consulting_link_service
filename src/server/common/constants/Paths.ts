@@ -1,4 +1,5 @@
 export default {
+  origin: 'https://www.lebronconsulting.tech/',
   base: '/:linkId',
   Admin: {
     Base: '/admin',

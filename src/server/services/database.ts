@@ -2,10 +2,14 @@
 Service to interact and manage SQlite DB Cache
 */
 import { base62Encode } from '@src/common/util/base62';
-import { Link, LinkTable } from '@src/models/common/types/link.model';
+import {
+  Link,
+  redirectQuery,
+} from '@src/models/common/types/link.model';
 import Database from 'better-sqlite3';
-import { promises as fs, link } from 'fs';
+import { promises as fs} from 'fs';
 import logger from 'jet-logger';
+import Paths from '@src/common/constants/Paths';
 
 const db = new Database('link_cache.db');
 db.pragma('journal_mode = WAL');
@@ -51,7 +55,6 @@ TODO: SECURITY Validate redirect URLs before storing to prevent open redirect
 TODO: add proper error handling higher order function
  */
 function insertLink(link: Link) {
-  logger.info(link);
   // Add individual Link to DB
   const linkInsert = db
     .prepare(
@@ -81,30 +84,45 @@ function insertLink(link: Link) {
   );
 }
 
-function queryLinkByShortnedUrl(link: LinkTable) {
-  // Add individual Link to DB
-  const query = db
-    .prepare(
-      `
-      Select redirect_url FROM links WHERE shortened_url = ?
-      `
-    )
-    .run(link.encodedUrlSlug);
+function queryLink(slug: string) {
+  const customUrl = queryLinkByCustomUrl(slug);
+  const encodedUrl = queryLinkByEncodedUrl(slug);
 
-  return query;
+  if (customUrl) {
+    return customUrl;
+  } else if (encodedUrl) {
+    return encodedUrl;
+  } else {
+    return Paths.origin;
+  }
 }
 
-function queryLinkByCustomUrl(link: Link) {
-  // Add individual Link to DB
-  const query = db
-    .prepare(
+function queryLinkByEncodedUrl(encodedUrl: string) {
+  const query = db.prepare(
+    `
+      Select redirect_url FROM links WHERE encoded_url_slug = ?
       `
+  );
+
+  const redirectQuery = query.get(encodedUrl) as redirectQuery;
+
+  return redirectQuery?.redirect_url;
+}
+
+function queryLinkByCustomUrl(customUrlSlug: string) {
+  const query = db.prepare(
+    `
       Select redirect_url FROM links WHERE custom_url_slug = ?
       `
-    )
-    .run(link.customUrlSlug);
-
-  return query;
+  );
+  const redirectQuery = query.get(customUrlSlug) as redirectQuery;
+  return redirectQuery?.redirect_url;
 }
 
-export { startCache, insertLink, queryLinkByShortnedUrl, queryLinkByCustomUrl };
+export {
+  startCache,
+  insertLink,
+  queryLink,
+  queryLinkByEncodedUrl,
+  queryLinkByCustomUrl,
+};

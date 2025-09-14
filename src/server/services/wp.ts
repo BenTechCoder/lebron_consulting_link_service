@@ -3,6 +3,7 @@ Service for managing and interacting with the WP-API
 */
 
 import ENV from '@src/common/constants/ENV';
+import { slug } from '@src/common/slug';
 import { Link } from '@src/models/common/types/link.model';
 import { WpLinkRequest } from '@src/models/common/types/wp.model';
 import logger from 'jet-logger';
@@ -26,7 +27,8 @@ export async function getAllLinks(): Promise<Link[]> {
   return Promise.all(
     wpResponse.map(async (link: WpLinkRequest) => {
       return await extractLinkFromWp(link);
-}))
+    })
+  );
 }
 
 export async function getQuickPageLink(id: number): Promise<URL> {
@@ -46,6 +48,7 @@ export async function extractLinkFromWp(req: WpLinkRequest) {
     linkSource: req.link,
     linkSourceId: req.id,
     redirectUrl: new URL(linkRedirectUrl),
+    customUrlSlug: slug(req.link_name),
     createdAt: new Date(req.date),
     lastModified: new Date(req.modified),
   };

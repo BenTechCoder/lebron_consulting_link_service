@@ -1,4 +1,4 @@
-export type LinkTable = {
+export interface LinkTable {
   id: number;
   linkSource: string;
   linkSourceId: number;
@@ -9,4 +9,8 @@ export type LinkTable = {
   lastModified: Date;
 }
 
-export type Link = Omit<LinkTable, 'id' | 'encodedUrlSlug' >
+export type Link = Omit<LinkTable, 'id' | 'encodedUrlSlug'>;
+
+export interface redirectQuery {
+  redirect_url: string;
+}
