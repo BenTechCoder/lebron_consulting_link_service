@@ -81,7 +81,6 @@ export default tseslint.config(
       }],
       '@typescript-eslint/no-non-null-assertion': 0,
       '@typescript-eslint/no-unused-expressions': 'warn',
-      'comma-dangle': ['warn', 'always-multiline'],
       'no-console': 1,
       'no-extra-boolean-cast': 0,
       'indent': ['warn', 2],
